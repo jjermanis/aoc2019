@@ -1,0 +1,11 @@
+C:\Users\john.jermanis\Documents\src\dump\AoC2019\AoC2019\bin\Debug\netcoreapp2.2\AoC2019.deps.json
+C:\Users\john.jermanis\Documents\src\dump\AoC2019\AoC2019\bin\Debug\netcoreapp2.2\AoC2019.runtimeconfig.json
+C:\Users\john.jermanis\Documents\src\dump\AoC2019\AoC2019\bin\Debug\netcoreapp2.2\AoC2019.runtimeconfig.dev.json
+C:\Users\john.jermanis\Documents\src\dump\AoC2019\AoC2019\bin\Debug\netcoreapp2.2\AoC2019.dll
+C:\Users\john.jermanis\Documents\src\dump\AoC2019\AoC2019\bin\Debug\netcoreapp2.2\AoC2019.pdb
+C:\Users\john.jermanis\Documents\src\dump\AoC2019\AoC2019\obj\Debug\netcoreapp2.2\AoC2019.csprojAssemblyReference.cache
+C:\Users\john.jermanis\Documents\src\dump\AoC2019\AoC2019\obj\Debug\netcoreapp2.2\AoC2019.csproj.CoreCompileInputs.cache
+C:\Users\john.jermanis\Documents\src\dump\AoC2019\AoC2019\obj\Debug\netcoreapp2.2\AoC2019.AssemblyInfoInputs.cache
+C:\Users\john.jermanis\Documents\src\dump\AoC2019\AoC2019\obj\Debug\netcoreapp2.2\AoC2019.AssemblyInfo.cs
+C:\Users\john.jermanis\Documents\src\dump\AoC2019\AoC2019\obj\Debug\netcoreapp2.2\AoC2019.dll
+C:\Users\john.jermanis\Documents\src\dump\AoC2019\AoC2019\obj\Debug\netcoreapp2.2\AoC2019.pdb
