@@ -8,7 +8,7 @@ namespace AoC2019
 {
     class Program
     {
-        private const string FILE_PATH = @"C:\Users\john.jermanis\Documents\src\dump\AoC2019\AoC2019\";
+        private const string FILE_PATH = @"..\..\..\Inputs\";
 
         static void Main(string[] args)
         {
@@ -18,7 +18,7 @@ namespace AoC2019
 
             Console.WriteLine($"Time: {Environment.TickCount - start} ms");
         }
-        
+
         static void Day24()
         {
             DoPart1("Day24Test1.txt", 2129920);
@@ -48,7 +48,7 @@ namespace AoC2019
                 for (var x = 0; x < 5; x++)
                 {
                     var nc = NeighborCount(grid, x, y);
-                    if (grid[(x,y)])
+                    if (grid[(x, y)])
                     {
                         result[(x, y)] = nc == 1;
                     }
@@ -90,7 +90,7 @@ namespace AoC2019
             var lines = TextFileLines(filename).ToArray();
             for (var y = 0; y < 5; y++)
                 for (var x = 0; x < 5; x++)
-                    result[(x,y)] = lines[y][x] == '#';
+                    result[(x, y)] = lines[y][x] == '#';
             return result;
         }
 
@@ -1575,181 +1575,6 @@ namespace AoC2019
             Console.WriteLine($"Part 1 count: {count1}");
             Console.WriteLine($"Part 2 count: {count2}");
         }
-
-        static void Day3()
-        {
-            var data = TextFileLines("Day3.txt").ToArray();
-            Console.WriteLine(NearestManhattanIntersectDist(data[0], data[1]));
-            Console.WriteLine(NearestWireIntersectDist(data[0], data[1]));
-        }
-
-        static int NearestManhattanIntersectDist(string w1, string w2)
-        {
-            var grid = BuildGrid(w1);
-
-            var minDist = int.MaxValue;
-            var curr = new GridLoc();
-            foreach (var move in Moves(w2))
-            {
-                for (int i = 0; i < move.Distance; i++)
-                {
-                    curr = curr.Move(move.Direction);
-                    
-                    if (grid.ContainsKey(curr))
-                    {
-                        var dist = Math.Abs(curr.X) + Math.Abs(curr.Y);
-                        minDist = Math.Min(minDist, dist);
-                    }
-                }
-            }
-            return minDist;
-        }
-
-        static int NearestWireIntersectDist(string w1, string w2)
-        {
-            var grid = BuildGrid(w1);
-
-            var minDist = int.MaxValue;
-            var count = 0;
-            var curr = new GridLoc();
-            foreach (var move in Moves(w2))
-            {
-                for (int i = 0; i < move.Distance; i++)
-                {
-                    curr = curr.Move(move.Direction);
-                    count++;
-
-                    if (grid.ContainsKey(curr))
-                    {
-                        var dist = grid[curr] + count;
-                        minDist = Math.Min(minDist, dist);
-                    }
-                }
-            }
-            return minDist;
-        }
-
-        struct Move
-        {
-            public char Direction { get; set; }
-            public int Distance { get; set; }
-        }
-
-        struct GridLoc
-        {
-            public int X { get; set; }
-            public int Y { get; set; }
-            public GridLoc Move(char dir)
-            {
-                switch (dir)
-                {
-                    case 'L':
-                        return new GridLoc { X = this.X - 1, Y = this.Y };
-                    case 'R':
-                        return new GridLoc { X = this.X + 1, Y = this.Y };
-                    case 'U':
-                        return new GridLoc { X = this.X, Y = this.Y + 1 };
-                    case 'D':
-                        return new GridLoc { X = this.X, Y = this.Y - 1 };
-                    default:
-                        throw new Exception($"Unknown dir: {dir}");
-                }
-            }
-        }
-
-        static IEnumerable<Move> Moves(string steps)
-        {
-            var moves = steps.Split(',');
-            foreach (var move in moves)
-                yield return new Move
-                {
-                    Direction = move[0],
-                    Distance = int.Parse(move.Substring(1))
-                };
-        }
-
-        static IDictionary<GridLoc, int> BuildGrid(string steps)
-        {
-            var curr = new GridLoc();
-            var result = new Dictionary<GridLoc, int>();
-            int moves = 0;
-            result.Add(curr, moves++);
-            foreach (var move in Moves(steps))
-            {
-                for (int i=0; i<move.Distance; i++)
-                {
-                    curr = curr.Move(move.Direction);
-                    if (!result.ContainsKey(curr))
-                        result.Add(curr, moves++);
-                    else
-                        moves++;
-                }
-            }
-            return result;
-        }
-
-        static void Day1()
-        {
-            var total = 0;
-            foreach (var massText in TextFileLines("Day1.txt"))
-            {
-                //total += Day1SimpleFuel(int.Parse(massText));
-                total += Day1ComplexFuel(int.Parse(massText));
-            }
-            Console.WriteLine(total);
-        }
-
-        static int Day1ComplexFuel(int mass)
-        {
-            var simpleFuel = Day1SimpleFuel(mass);
-            return simpleFuel > 0 ? simpleFuel + Day1ComplexFuel(simpleFuel) : 0;
-        }
-
-        static int Day1SimpleFuel(int mass)
-            => mass / 3 - 2;
-
-        static void Day2()
-        {
-            var rawData = TextFile("Day2.txt").Split(',');
-
-            for (int noun = 0; noun < 100; noun++)
-                for (int verb = 0; verb < 100; verb++)
-                {
-                    var memory = rawData.Select(int.Parse).ToArray();
-                    memory[1] = noun;
-                    memory[2] = verb;
-                    var result = IntcodeExecute(memory);
-                    if (result == 19690720)
-                        Console.WriteLine(100 * noun + verb);
-                }
-        }
-
-        static int IntcodeExecute(int[] memory)
-        {
-            int pc = 0;
-            while (true)
-            {
-                int opCode = Read(pc);
-                switch (opCode)
-                {
-                    case 1:
-                        memory[Read(pc + 3)] = ReadAddr(pc + 1) + ReadAddr(pc + 2);
-                        pc += 4;
-                        break;
-                    case 2:
-                        memory[Read(pc + 3)] = ReadAddr(pc + 1) * ReadAddr(pc + 2);
-                        pc += 4;
-                        break;
-                    case 99:
-                        return Read(0);
-                }
-            }
-
-            int Read(int x) => memory[x];
-            int ReadAddr(int x) => Read(Read(x));
-
-        }
-
 
         static IEnumerable<string> TextFileLines(string fileName)
             => File.ReadLines(FILE_PATH + fileName);

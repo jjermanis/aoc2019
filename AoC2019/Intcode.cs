@@ -100,6 +100,9 @@ namespace AoC2019
         public void Poke(long addr, long value)
             => _memory[addr] = value;
 
+        public long Peek(long addr)
+            => _memory[addr];
+
         public long LastOutput { get => _output.Value;  }
 
         public IEnumerable<long?> Execute(
