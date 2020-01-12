@@ -41,7 +41,7 @@ namespace AoC2019
             var intcode = new Intcode(_program);
             var painting = new Dictionary<(int, int), long>();
             painting[(0, 0)] = startColor;
-            intcode.AddInput(startColor);
+            intcode.AddInputs(startColor);
 
             int x = 0;
             int y = 0;
@@ -78,9 +78,9 @@ namespace AoC2019
 
                     // Let robot know about location
                     if (painting.ContainsKey((x, y)))
-                        intcode.AddInput(painting[(x, y)]);
+                        intcode.AddInputs(painting[(x, y)]);
                     else
-                        intcode.AddInput(0);
+                        intcode.AddInputs(0);
                 }
             }
             return painting;

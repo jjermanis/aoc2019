@@ -14,7 +14,8 @@ namespace AoC2019
         {
             int start = Environment.TickCount;
 
-            Day24();
+            //Day8();
+            new Day12().Do();
 
             Console.WriteLine($"Time: {Environment.TickCount - start} ms");
         }
@@ -441,7 +442,7 @@ namespace AoC2019
             void Input(string text)
             {
                 intcode.AddInputs(text.Select(x => (long)x).ToArray());
-                intcode.AddInput(10);
+                intcode.AddInputs(10);
             }
         }
         private static int Day17Alignment()
@@ -509,8 +510,6 @@ namespace AoC2019
             void DoPart2(string inputFile, int phaseCount, int expected)
                 => Console.WriteLine($"Case {inputFile}.  Expected: {expected}.  Result: {CalcRepeatedFft(10000, phaseCount, TextFile(inputFile))}");
         }
-
-        private static byte[] _cache;
 
         private static sbyte[] _basePattern = new sbyte[] { 0, 1, 0, -1 };
 
@@ -706,7 +705,7 @@ namespace AoC2019
                 (int, int) Loc(int di) => (x + dx[di % 4], y + dy[di % 4]);
                 int Move(int di)
                 {
-                    intcode.AddInput(Dir(di));
+                    intcode.AddInputs(Dir(di));
                     enumer.MoveNext();
                     return (int)enumer.Current;
                 }
@@ -1180,7 +1179,7 @@ namespace AoC2019
             var intcode = new Intcode(TextFile("Day11.txt"));
             var painting = new Dictionary<(int, int), long>();
             painting[(0, 0)] = startColor;
-            intcode.AddInput(startColor);
+            intcode.AddInputs(startColor);
 
             int x = 0;
             int y = 0;
@@ -1217,9 +1216,9 @@ namespace AoC2019
 
                     // Let robot know about location
                     if (painting.ContainsKey((x, y)))
-                        intcode.AddInput(painting[(x, y)]);
+                        intcode.AddInputs(painting[(x, y)]);
                     else
-                        intcode.AddInput(0);
+                        intcode.AddInputs(0);
                 }
             }
             return painting;
@@ -1332,7 +1331,6 @@ namespace AoC2019
 
         static void Day9()
         {
-            IntcodeTest();
             Console.WriteLine("Regression tests passed");
 
             var part1 = (new Intcode()).Execute(TextFile("Day9.txt"), new long[] { 1 }, false).First();
@@ -1341,240 +1339,9 @@ namespace AoC2019
             Console.WriteLine($"Part 2: {part2}");
         }
 
-        static void IntcodeTest()
-        {
-            if (MaxSignal() != 19650)
-                throw new Exception();
-            if (ExecuteDay5(1) != 13210611)
-                throw new Exception();
-            if (ExecuteDay5(5) != 584126)
-                throw new Exception();
 
-            long? ExecuteDay5(long input) => (new Intcode()).Execute(TextFile("Day5.txt"), new long[] { input }).Last();
-        }
 
-        static void Day8()
-        {
-            var image = TextFile("Day8.txt");
-            var width = 25;
-            var height = 6;
-            var size = width * height;
 
-            var part1 = Day8Part1(image, size);
-            Console.WriteLine($"Part 1: {part1}");
-            Day8Part2(image, width, height);
-        }
-
-        static void Day8Part2(string image, int width, int height)
-        {
-            var size = width * height;
-            for (var y = 0; y < height; y++)
-            {
-                for (var x = 0; x < width; x++)
-                {
-                    var layer = 0;
-                    while (Curr() == '2')
-                        layer++;
-                    Console.Write(Curr() == '0' ? ' ' : '#');
-
-                    char Curr() => image[layer * size + width * y + x];
-                }
-                Console.WriteLine();
-            }      
-        }
-
-        static int Day8Part1(string image, int size)
-        {
-            var layers = image.Length / size;
-            var min = int.MaxValue;
-            IDictionary<int, int> minProfile = null;
-            for (int layer=0; layer < layers; layer++)
-            {
-                var curr = GetLayerProfile(image, layer, size);
-                if (curr[0] < min)
-                {
-                    min = curr[0];
-                    minProfile = curr;
-                }
-            }
-            return minProfile[1] * minProfile[2];
-        }
-
-        static IDictionary<int, int> GetLayerProfile(
-            string image,
-            int layer,
-            int size)
-        {
-            var result = new Dictionary<int, int>();
-            for (var x = 0; x < 10; x++)
-                result[x] = 0;
-            for (int x = layer * size; x < (layer + 1) * size; x++)
-            {
-                result[image[x] - '0']++;
-            }
-            return result;
-        }
-
-        static void Day7()
-        {
-            Console.WriteLine(MaxSignal());
-            Console.WriteLine(MaxSignalPart2());
-        }
-
-        static long MaxSignalPart2()
-        {
-            var max = 0L;
-            var programText = TextFile("Day7.txt");
-
-            foreach (var perm in Util.Permute(5, 6, 7, 8, 9))
-            {
-                int intcodeCount = perm.Length;
-                Intcode[] intcodes = new Intcode[intcodeCount];
-                IEnumerator<long>[] icEnums = new IEnumerator<long>[intcodeCount];
-                for (var x = 0; x < intcodeCount; x++)
-                {
-                    intcodes[x] = new Intcode(programText);
-                    intcodes[x].AddInput(perm[x]);
-                    icEnums[x] = intcodes[x].Execute().GetEnumerator();
-                }
-                intcodes[0].AddInput(0);
-
-                bool isTerminated = false;
-                while (!isTerminated)
-                {
-                    for (var x = 0; x <intcodeCount; x++)
-                    {
-                        var isNext = icEnums[x].MoveNext();
-                        if (!isNext)
-                        {
-                            isTerminated = true;
-                            break;
-                        }
-                        NextIntcode(x).AddInput(icEnums[x].Current);
-                    }
-                }
-
-                max = Math.Max(max, intcodes[4].LastOutput);
-
-                Intcode NextIntcode(int x) => intcodes[(x + 1) % 5];
-            }
-            return max;
-
-        }
-
-        static long MaxSignal()
-        {
-            var max = 0L;
-            foreach (var perm in Util.Permute(0, 1, 2, 3, 4))
-            {
-                long result = 0;
-                for (int i=0; i < 5; i++)
-                {
-                    result = Execute(perm[i], result);
-                }
-                max = Math.Max(max, result);
-            }
-            return max;
-
-            long Execute(int phase, long input)
-                => (new Intcode()).Execute(TextFile("Day7.txt"), new long[] { phase, input }).First().Value;
-        }
-
-        static void Day6()
-        {
-            var graph = new Dictionary<string, string>();
-            foreach(var line in TextFileLines("Day6.txt"))
-            {
-                string inner = line.Substring(0, 3);
-                string outer = line.Substring(4, 3);
-
-                graph.Add(outer, inner);
-            }
-
-            string curr;
-            var totalCount = 0;
-            foreach (var body in graph.Keys)
-            {
-                curr = body;
-                while (!curr.Equals("COM"))
-                {
-                    totalCount++;
-                    curr = graph[curr];
-                }
-            }
-
-            var sanOrbits = new List<string>();
-            curr = "SAN";
-            while (!curr.Equals("COM"))
-            {
-                curr = graph[curr];
-                sanOrbits.Add(curr);
-            }
-            curr = "YOU";
-            int transferCount = 0;
-            while (!curr.Equals("COM"))
-            {
-                curr = graph[curr];
-                transferCount++;
-                if (sanOrbits.Contains(curr))
-                {
-                    transferCount += sanOrbits.IndexOf(curr) - 1;
-                    break;
-                }
-            }
-
-            Console.WriteLine($"Orbit count: {totalCount}");
-            Console.WriteLine($"YOU->SAN transfers: {transferCount}");
-        }
-
-        static void Day5()
-        {
-            Console.WriteLine($"Part 1: {Execute(1)}");
-            Console.WriteLine($"Part 2: {Execute(5)}");
-
-            long? Execute(int input) => (new Intcode()).Execute(TextFile("Day5.txt"), new long[] { input }).First();
-        }
-
-        static void Day4()
-        {
-            var start = 130254;
-            var end = 678275;
-
-            var count1 = 0;
-            var count2 = 0;
-            for (var i =start; i < end; i++)
-            {
-                var val = i.ToString();
-
-                var hasDouble = false;
-                var hasDoubleExact = false;
-                var isAscending = true;
-                for (int c = 0; c < 5; c++)
-                {
-                    if (val[c] == val[c + 1])
-                        hasDouble = true;
-                    if (val[c] > val[c + 1])
-                        isAscending = false;
-                }
-                var digits = new int[10];
-                var temp = i;
-                for (int c = 0; c < 6; c++)
-                {
-                    digits[temp % 10]++;
-                    temp /= 10;
-                }
-                foreach (var dc in digits)
-                    if (dc == 2)
-                        hasDoubleExact = true;
-
-                if (hasDouble && isAscending)
-                    count1++;
-                if (hasDoubleExact && isAscending)
-                    count2++;
-            }
-            Console.WriteLine($"Part 1 count: {count1}");
-            Console.WriteLine($"Part 2 count: {count2}");
-        }
 
         static IEnumerable<string> TextFileLines(string fileName)
             => File.ReadLines(FILE_PATH + fileName);

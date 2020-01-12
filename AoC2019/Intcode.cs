@@ -20,6 +20,10 @@ namespace AoC2019
         {
             InitMemory(textMemory);
         }
+        public Intcode(long[] memory)
+        {
+            InitMemory(memory);
+        }
 
         private enum OpCode
         {
@@ -56,17 +60,15 @@ namespace AoC2019
             public int[] Modes { get; set; }
         }
 
-        public void AddInput(long val)
-            => _inputs.Enqueue(val);
         public void AddInputs(params long[] vals)
         {
             foreach (var val in vals)
-                AddInput(val);
+                _inputs.Enqueue(val);
         }
         public void UpdateInput(long val)
         {
             if (InputQueueLen == 0)
-                AddInput(val);
+                AddInputs(val);
             else
             {
                 if (InputQueueLen > 1)
@@ -80,6 +82,10 @@ namespace AoC2019
         public void InitMemory(string textData)
         {
             var data = textData.Split(',').Select(long.Parse).ToArray();
+            InitMemory(data);
+        }
+        public void InitMemory(long[] data)
+        {
             _program = new long[data.Length];
             _memory = new Dictionary<long, long>(data.Length);
             for (int i = 0; i < data.Length; i++)
@@ -87,6 +93,7 @@ namespace AoC2019
                 _program[i] = data[i];
                 _memory[i] = data[i];
             }
+
         }
         public void ResetProgram()
         {

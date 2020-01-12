@@ -1,30 +1,34 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace AoC2019
 {
     public class Day01 : DayBase, IDay
     {
+        private readonly IEnumerable<int> _moduleMasses;
+
+        public Day01(string filename)
+        {
+            _moduleMasses = TextFileLines(filename).Select(m => int.Parse(m));
+        }
+
+        public Day01() : this("Day01.txt")
+        {
+        }
+
         public void Do()
         {
-            (var s, var c) = DoCalc();
-            Console.WriteLine($"Simple fuel calc: {s}");
-            Console.WriteLine($"Complex fuel calc: {c}");
+            Console.WriteLine($"Simple fuel calc: {SimpleFuelTotal()}");
+            Console.WriteLine($"Complex fuel calc: {ComplexFuelTotal()}");
         }
 
-        public (int, int) DoCalc()
-            => DoCalc("Day01.txt");
+        public int SimpleFuelTotal()
+            => _moduleMasses.Sum(m => Day1SimpleFuel(m));
 
-        public (int, int) DoCalc(string filename)
-        {
-            var simple = 0;
-            var complex = 0;
-            foreach (var massText in TextFileLines(filename))
-            {
-                simple += Day1SimpleFuel(int.Parse(massText));
-                complex += Day1ComplexFuel(int.Parse(massText));
-            }
-            return (simple, complex);
-        }
+        public int ComplexFuelTotal()
+            => _moduleMasses.Sum(m => Day1ComplexFuel(m));
+
 
         private int Day1ComplexFuel(int mass)
         {

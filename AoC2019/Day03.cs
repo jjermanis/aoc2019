@@ -6,37 +6,37 @@ namespace AoC2019
 {
     public class Day03 : DayBase, IDay
     {
+        private readonly string _wire1;
+        private readonly string _wire2;
+        private readonly IDictionary<GridLoc, int> _grid1;
+
+        public Day03(string filename)
+        {
+            var data = TextFileLines(filename).ToArray();
+            _wire1 = data[0];
+            _wire2 = data[1];
+            _grid1 = BuildGrid(_wire1);
+        }
+        public Day03() : this("Day03.txt")
+        {
+        }
         public void Do()
         {
-            var filename = "Day03.txt";
-            Console.WriteLine($"Manhattan distance: {NearestManhattanIntersectDist(filename)}");
-            Console.WriteLine($"Wire distance:      {NearestWireIntersectDist(filename)}");
+            Console.WriteLine($"Manhattan distance: {NearestManhattanIntersectDist()}");
+            Console.WriteLine($"Wire distance:      {NearestWireIntersectDist()}");
         }
 
-        public int NearestManhattanIntersectDist(string filename)
+        public int NearestManhattanIntersectDist()
         {
-            var data = TextFileLines(filename).ToArray();
-            return NearestManhattanIntersectDist(data[0], data[1]);
-        }
-        public int NearestWireIntersectDist(string filename)
-        {
-            var data = TextFileLines(filename).ToArray();
-            return NearestWireIntersectDist(data[0], data[1]);
-        }
-
-        public int NearestManhattanIntersectDist(string w1, string w2)
-        {
-            var grid = BuildGrid(w1);
-
             var minDist = int.MaxValue;
             var curr = new GridLoc();
-            foreach (var move in Moves(w2))
+            foreach (var move in Moves(_wire2))
             {
                 for (int i = 0; i < move.Distance; i++)
                 {
                     curr = curr.Move(move.Direction);
 
-                    if (grid.ContainsKey(curr))
+                    if (_grid1.ContainsKey(curr))
                     {
                         var dist = Math.Abs(curr.X) + Math.Abs(curr.Y);
                         minDist = Math.Min(minDist, dist);
@@ -46,23 +46,21 @@ namespace AoC2019
             return minDist;
         }
 
-        public int NearestWireIntersectDist(string w1, string w2)
+        public int NearestWireIntersectDist()
         {
-            var grid = BuildGrid(w1);
-
             var minDist = int.MaxValue;
             var count = 0;
             var curr = new GridLoc();
-            foreach (var move in Moves(w2))
+            foreach (var move in Moves(_wire2))
             {
                 for (int i = 0; i < move.Distance; i++)
                 {
                     curr = curr.Move(move.Direction);
                     count++;
 
-                    if (grid.ContainsKey(curr))
+                    if (_grid1.ContainsKey(curr))
                     {
-                        var dist = grid[curr] + count;
+                        var dist = _grid1[curr] + count;
                         minDist = Math.Min(minDist, dist);
                     }
                 }
