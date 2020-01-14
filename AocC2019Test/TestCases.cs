@@ -126,8 +126,8 @@ namespace AocC2019Test
             => Assert.AreEqual(expected, new Day10(filename).MostVisibleAsteroids().VisibleAsteroids.Count);
 
         private void Day10TestFull(
-            Day10 day, 
-            int expectedCount, 
+            Day10 day,
+            int expectedCount,
             int expectedCode)
         {
             var best = day.MostVisibleAsteroids();
@@ -141,14 +141,75 @@ namespace AocC2019Test
         {
             var day = new Day11();
             Assert.AreEqual(2184, day.GetPaintedSpaceCount(0));
-            // Add unit test for visualization
+            var p2 = day.PaintingVisualization(1).ToList();
+            Assert.AreEqual("  ##  #  #  ##  #  # #### #### ###  #  #", p2[0]);
+            Assert.AreEqual(" #  # #### #    ####   #  ###  #  # ##", p2[2]);
+            Assert.AreEqual(" #### #  # #    #  #  #   #    ###  # #", p2[3]);
+            Assert.AreEqual(" #  # #  # #  # #  # #    #    #    # #", p2[4]);
         }
 
         [TestMethod]
         public void Day12()
         {
-            // Add unit test
+            var test1 = new Day12("Day12Test1.txt");
+            Assert.AreEqual(179, test1.CalcEnergy(10));
+            Assert.AreEqual(2772, test1.CyclePeriod());
+
+            var test2 = new Day12("Day12Test2.txt");
+            Assert.AreEqual(1940, test2.CalcEnergy(100));
+            Assert.AreEqual(4686774924, test2.CyclePeriod());
+
+            var day = new Day12();
+            Assert.AreEqual(12490, day.CalcEnergy(1000));
+            Assert.AreEqual(392733896255168, day.CyclePeriod());
         }
 
+        [TestMethod]
+        public void Day13()
+        {
+            var day = new Day13();
+            Assert.AreEqual(260, day.BlockCountExit());
+            Assert.AreEqual(12952, day.PlayGame());
+        }
+
+        [TestMethod]
+        public void Day14()
+        {
+            var test1 = new Day14("Day14Test1.txt");
+            Assert.AreEqual(31, test1.OreNeeded());
+            var test2 = new Day14("Day14Test2.txt");
+            Assert.AreEqual(165, test2.OreNeeded());
+            var test3 = new Day14("Day14Test3.txt");
+            Assert.AreEqual(13312, test3.OreNeeded());
+            Assert.AreEqual(82892753, test3.MaxFuel());
+            var test4 = new Day14("Day14Test4.txt");
+            Assert.AreEqual(180697, test4.OreNeeded());
+            Assert.AreEqual(5586022, test4.MaxFuel());
+            var test5 = new Day14("Day14Test5.txt");
+            Assert.AreEqual(2210736, test5.OreNeeded());
+            Assert.AreEqual(460664, test5.MaxFuel());
+
+            var day = new Day14();
+            Assert.AreEqual(1920219, day.OreNeeded());
+            Assert.AreEqual(1330066, day.MaxFuel());
+        }
+
+        [TestMethod]
+        public void Day15()
+        {
+            var day = new Day15();
+            (var p1, var p2) = day.TraverseMaze();
+            Assert.AreEqual(218, p1);
+            Assert.AreEqual(544, p2);
+        }
+
+        [TestMethod]
+        public void Day16()
+        {
+            var day = new Day16();
+            Assert.AreEqual(85726502, day.CalcFft(100));
+            // TODO solve 16-2
+            Assert.IsTrue(false);
+        }
     }
 }

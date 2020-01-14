@@ -20,9 +20,8 @@ namespace AoC2019
         {
             Console.WriteLine($"Spaces painted: {GetPaintedSpaceCount(0)}");
 
-            var painting = GetPainting(1);
             Console.WriteLine("Visualization:");
-            PrintPainting(painting);
+            PrintPainting(PaintingVisualization(1));
         }
 
         public int GetPaintedSpaceCount(int input)
@@ -86,8 +85,17 @@ namespace AoC2019
             return painting;
         }
 
-        private void PrintPainting(IDictionary<(int, int), long> painting)
+        private void PrintPainting(IEnumerable<string> visualization)
         {
+            foreach (var line in visualization)
+                Console.WriteLine(line);
+        }
+
+        public IEnumerable<string> PaintingVisualization(int startColor)
+        {
+            var painting = GetPainting(startColor);
+
+            var result = new List<string>();
             var minX = int.MaxValue;
             var maxX = int.MinValue;
             var minY = int.MaxValue;
@@ -99,21 +107,24 @@ namespace AoC2019
                 minY = Math.Min(minY, key.Item2);
                 maxY = Math.Max(maxY, key.Item2);
             }
+            var width = maxX - minX + 1;
             for (var y = maxY; y >= minY; y--)
             {
+                var line = new char[width];
                 for (var x = minX; x <= maxX; x++)
                 {
                     if (painting.ContainsKey((x, y)) && (painting[(x, y)] == 1))
                     {
-                        Console.Write("#");
+                        line[x+minX] = '#';
                     }
                     else
                     {
-                        Console.Write(" ");
+                        line[x+minX] = ' ';
                     }
                 }
-                Console.WriteLine();
+                result.Add(new string(line).TrimEnd());
             }
+            return result;
         }
     }
 }
