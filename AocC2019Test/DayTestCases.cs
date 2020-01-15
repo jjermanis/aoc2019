@@ -5,7 +5,7 @@ using System.Linq;
 namespace AocC2019Test
 {
     [TestClass]
-    public class TestCases
+    public class DayTestCases
     {
         [TestMethod]
         public void Day01()
@@ -206,9 +206,109 @@ namespace AocC2019Test
         [TestMethod]
         public void Day16()
         {
+            var test0 = new Day16("Day16Test0.txt");
+            Assert.AreEqual(1029498, test0.CalcFft(4));
+            var test1 = new Day16("Day16Test1.txt");
+            Assert.AreEqual(24176176, test1.CalcFft(100));
+            var test2 = new Day16("Day16Test2.txt");
+            Assert.AreEqual(73745418, test2.CalcFft(100));
+            var test3 = new Day16("Day16Test3.txt");
+            Assert.AreEqual(52432133, test3.CalcFft(100));
+
             var day = new Day16();
             Assert.AreEqual(85726502, day.CalcFft(100));
             // TODO solve 16-2
+            Assert.IsTrue(false);
+        }
+
+        [TestMethod]
+        public void Day17()
+        {
+            var day = new Day17();
+            Assert.AreEqual(9544, day.SumAlignment());
+            Assert.AreEqual(1499679, day.NavigateMaze());
+        }
+
+        [TestMethod]
+        public void Day18()
+        {
+            var test1 = new Day18("Day18Test1.txt");
+            Assert.AreEqual(86, test1.SolveMaze());
+            var test2 = new Day18("Day18Test2.txt");
+            Assert.AreEqual(132, test2.SolveMaze());
+            // TODO - this case is too slows - runs in about 2 minutes
+            //var test3 = new Day18("Day18Test3.txt");
+            //Assert.AreEqual(136, test3.SolveMaze());
+            var test4 = new Day18("Day18Test4.txt");
+            Assert.AreEqual(81, test4.SolveMaze());
+
+            // TODO solve part 1
+            Assert.IsTrue(false);
+            // TODO solve part 2
+            Assert.IsTrue(false);
+        }
+
+        [TestMethod]
+        public void Day19()
+        {
+            var day = new Day19();
+            Assert.AreEqual(131, day.LocalPointCount());
+
+            // TODO solve part 2
+            Assert.IsTrue(false);
+        }
+
+        [TestMethod]
+        public void Day20()
+        {
+            // TODO solve part 1
+            Assert.IsTrue(false);
+            // TODO solve part 2
+            Assert.IsTrue(false);
+        }
+
+        [TestMethod]
+        public void Day21()
+        {
+            // TODO solve part 1
+            Assert.IsTrue(false);
+            // TODO solve part 2
+            Assert.IsTrue(false);
+        }
+
+        [TestMethod]
+        public void Day22()
+        {
+            // TODO solve part 1
+            Assert.IsTrue(false);
+            // TODO solve part 2
+            Assert.IsTrue(false);
+        }
+
+        [TestMethod]
+        public void Day23()
+        {
+            // TODO solve part 1
+            Assert.IsTrue(false);
+            // TODO solve part 2
+            Assert.IsTrue(false);
+        }
+
+        [TestMethod]
+        public void Day24()
+        {
+            // TODO solve part 1
+            Assert.IsTrue(false);
+            // TODO solve part 2
+            Assert.IsTrue(false);
+        }
+
+        [TestMethod]
+        public void Day25()
+        {
+            // TODO solve part 1
+            Assert.IsTrue(false);
+            // TODO solve part 2
             Assert.IsTrue(false);
         }
     }
