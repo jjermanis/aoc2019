@@ -236,7 +236,7 @@ namespace AocC2019Test
             Assert.AreEqual(86, test1.SolveMaze());
             var test2 = new Day18("Day18Test2.txt");
             Assert.AreEqual(132, test2.SolveMaze());
-            // TODO - this case is too slows - runs in about 2 minutes
+            // TODO - this case is too slow - runs in about 2 minutes
             //var test3 = new Day18("Day18Test3.txt");
             //Assert.AreEqual(136, test3.SolveMaze());
             var test4 = new Day18("Day18Test4.txt");
@@ -253,9 +253,7 @@ namespace AocC2019Test
         {
             var day = new Day19();
             Assert.AreEqual(131, day.LocalPointCount());
-
-            // TODO solve part 2
-            Assert.IsTrue(false);
+            Assert.AreEqual(15231022, day.FindFirstSquare(100));
         }
 
         [TestMethod]
@@ -313,3 +311,4 @@ namespace AocC2019Test
         }
     }
 }
+
