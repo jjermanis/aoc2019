@@ -123,6 +123,11 @@ namespace AoC2019
                 yield return value;
         }
 
+        protected Queue<long> InputQueue { get => _inputs;  }
+
+        protected virtual long GetInput()
+            => _inputs.Dequeue();
+
         public IEnumerable<long> Execute(
             bool outputToConsole = false)
         {
@@ -143,7 +148,7 @@ namespace AoC2019
                         Write(3, Read(1) * Read(2));
                         break;
                     case OpCode.Input:
-                        Write(1, _inputs.Dequeue());
+                        Write(1, GetInput());
                         break;
                     case OpCode.Output:
                         _output = Read(1);

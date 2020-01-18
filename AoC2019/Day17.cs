@@ -62,33 +62,17 @@ namespace AoC2019
             bool showAnimation = false,
             bool continuousFeed = false)
         {
-            var intcode = new Intcode(_program);
-            intcode.Poke(0, 2);
+            var asciiComp = new AsciiCapableIntcode(_program);
+            asciiComp.Poke(0, 2);
 
             // TODO: calculate the movement functions.  These were determined manually.
-            Input("A,A,B,C,C,A,B,C,A,B");
-            Input("L,12,L,12,R,12");
-            Input("L,8,L,8,R,12,L,8,L,8");
-            Input("L,10,R,8,R,12");
-            Input(continuousFeed ? "y" : "n");
+            asciiComp.InputLine("A,A,B,C,C,A,B,C,A,B");
+            asciiComp.InputLine("L,12,L,12,R,12");
+            asciiComp.InputLine("L,8,L,8,R,12,L,8,L,8");
+            asciiComp.InputLine("L,10,R,8,R,12");
+            asciiComp.InputLine(continuousFeed ? "y" : "n");
 
-            foreach (var output in intcode.Execute())
-            {
-                if (output < 127)
-                {
-                    if (showAnimation)
-                        Console.Write((char)output);
-                }
-                else
-                    return output;
-            }
-            return 0;
-
-            void Input(string text)
-            {
-                intcode.AddInputs(text.Select(x => (long)x).ToArray());
-                intcode.AddInputs(10);
-            }
+            return asciiComp.AnimateOutputNonAscii(showAnimation);
         }
 
         private void PrintMap()
