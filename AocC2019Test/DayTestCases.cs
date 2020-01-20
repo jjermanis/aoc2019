@@ -268,8 +268,8 @@ namespace AocC2019Test
         [TestMethod]
         public void Day21()
         {
-            // TODO solve part 1
-            Assert.IsTrue(false);
+            var day = new Day21();
+            Assert.AreEqual(19359996, day.Walk());
             // TODO solve part 2
             Assert.IsTrue(false);
         }
@@ -305,9 +305,11 @@ namespace AocC2019Test
         public void Day25()
         {
             // TODO solve part 1
-            Assert.IsTrue(false);
-            // TODO solve part 2
-            Assert.IsTrue(false);
+            var day = new Day25();
+            Assert.AreEqual(537165825, day.PlayGuided());
+
+            // Day 25 doesn't have a part 2.  It's automatically granted after
+            // solving the other puzzles
         }
     }
 }
