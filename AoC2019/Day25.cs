@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Text.RegularExpressions;
 
 namespace AoC2019
@@ -85,7 +84,8 @@ namespace AoC2019
             foreach (var move in _startMoves)
                 comp.InputLine(move);
 
-            // Try all the inventory combinations
+            // Try all the inventory combinations.  The program will terminate when the
+            // right combo is found, but all input is added before anything runs.
             for (var bitField = 1; bitField < 256; bitField++)
             {
                 var curr = bitField;
