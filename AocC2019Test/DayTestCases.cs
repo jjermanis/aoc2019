@@ -295,21 +295,23 @@ namespace AocC2019Test
         [TestMethod]
         public void Day24()
         {
-            // TODO solve part 1
-            Assert.IsTrue(false);
-            // TODO solve part 2
-            Assert.IsTrue(false);
+            var test1 = new Day24("Day24Test1.txt");
+            Assert.AreEqual(2129920, test1.FindDupRating());
+            Assert.AreEqual(99, test1.RecursiveGridBugCount(10));
+
+            var day = new Day24();
+            Assert.AreEqual(13500447, day.FindDupRating());
+            Assert.AreEqual(2120, day.RecursiveGridBugCount(200));
         }
 
         [TestMethod]
         public void Day25()
         {
-            // TODO solve part 1
             var day = new Day25();
             Assert.AreEqual(537165825, day.PlayGuided());
 
-            // Day 25 doesn't have a part 2.  It's automatically granted after
-            // solving the other puzzles
+            // Day 25 doesn't have a part 2.  Its star is automatically granted after
+            // solving the other 49 puzzles
         }
     }
 }

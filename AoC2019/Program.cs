@@ -10,7 +10,7 @@ namespace AoC2019
         {
             int start = Environment.TickCount;
 
-            new Day25().Do();
+            new Day24().Do();
 
             Console.WriteLine($"Time: {Environment.TickCount - start} ms");
         }
