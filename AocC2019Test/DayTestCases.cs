@@ -277,8 +277,17 @@ namespace AocC2019Test
         [TestMethod]
         public void Day22()
         {
-            // TODO solve part 1
-            Assert.IsTrue(false);
+            var test1 = new Day22("Day22Test1.txt");
+            Assert.AreEqual(8, test1.GetIndex(10, 4));
+            var test2 = new Day22("Day22Test2.txt");
+            Assert.AreEqual(3, test2.GetIndex(10, 4));
+            var test3 = new Day22("Day22Test3.txt");
+            Assert.AreEqual(4, test3.GetIndex(10, 4));
+            var test4 = new Day22("Day22Test4.txt");
+            Assert.AreEqual(5, test4.GetIndex(10, 4));
+
+            var day = new Day22();
+            Assert.AreEqual(6431, day.GetIndex(10007, 2019));
             // TODO solve part 2
             Assert.IsTrue(false);
         }
