@@ -259,8 +259,14 @@ namespace AocC2019Test
         [TestMethod]
         public void Day20()
         {
-            // TODO solve part 1
-            Assert.IsTrue(false);
+            var test1 = new Day20("Day20Test1.txt");
+            Assert.AreEqual(23, test1.ShortestPathLength());
+            var test2 = new Day20("Day20Test2.txt");
+            Assert.AreEqual(58, test2.ShortestPathLength());
+
+            var day = new Day20();
+            Assert.AreEqual(556, day.ShortestPathLength());
+
             // TODO solve part 2
             Assert.IsTrue(false);
         }

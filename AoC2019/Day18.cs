@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace AoC2019
 {
-    public class MazeInfo
+    class MazeInfo
     {
         public MazeInfo()
         {
