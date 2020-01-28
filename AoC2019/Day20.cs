@@ -10,11 +10,15 @@ namespace AoC2019
         {
             Cells = new Dictionary<(int, int), char>();
             Warps = new Dictionary<(int, int), (int, int)>();
+            OuterWarps = new HashSet<(int, int)>();
+            InnerWarps = new HashSet<(int, int)>();
         }
         public IDictionary<(int, int), char> Cells { get; set; }
         public (int, int) Start { get; set; }
         public (int, int) Finish { get; set; }
         public IDictionary<(int, int), (int, int)> Warps { get; set; }
+        public HashSet<(int, int)> OuterWarps {get; set;}
+        public HashSet<(int, int)> InnerWarps { get; set; }
     }
 
     public class Day20 : DayBase, IDay
@@ -29,8 +33,9 @@ namespace AoC2019
         }
         public void Do()
         {
-            PrintMaze();
+            //PrintMaze();
             Console.WriteLine($"Shortest path to finish: {ShortestPathLength()}");
+            Console.WriteLine($"Shortest path to recursive finish: {ShortestPathLengthRecursive()}");
         }
 
         public int ShortestPathLength()
@@ -79,6 +84,72 @@ namespace AoC2019
                             {
                                 cells.Enqueue(((xx, yy), dist + 1));
                                 distances.Add((xx, yy), dist + 1);
+                            }
+                        }
+                    }
+                }
+            }
+
+            return fastestPathLen;
+        }
+
+        public int ShortestPathLengthRecursive()
+        {
+            var fastestPathLen = int.MaxValue;
+            var distances = new Dictionary<(int, int, int), int>();
+            var cells = new Queue<((int, int, int), int)>();
+            var start = (_maze.Start.Item1, _maze.Start.Item2, 0);
+            cells.Enqueue((start, 0));
+            distances.Add(start, 0);
+            while (cells.Count > 0)
+            {
+                var curr = cells.Dequeue();
+                var loc = curr.Item1;
+                var x = curr.Item1.Item1;
+                var y = curr.Item1.Item2;
+                var depth = curr.Item1.Item3;
+                var dist = curr.Item2;
+
+                if (loc == (_maze.Finish.Item1, _maze.Finish.Item2, 0))
+                    // The start and finish locations are each off-by-one.  Adjust.
+                    fastestPathLen = dist - 2;
+
+                if (dist <= fastestPathLen)
+                {
+                    Try(x - 1, y, depth);
+                    Try(x + 1, y, depth);
+                    Try(x, y - 1, depth);
+                    Try(x, y + 1, depth);
+                }
+
+                void Try(int xx, int yy, int dd)
+                {
+                    if (_maze.Cells[(xx, yy)] != '#')
+                    {
+                        var isUnvisited = !distances.Keys.Contains((xx, yy, dd));
+                        var isFaster = !isUnvisited && dist < distances[(xx, yy, dd)];
+                        if (isUnvisited || isFaster)
+                        {
+                            if (isFaster)
+                                distances.Remove((xx, yy, dd));
+
+                            if (_maze.Cells[(xx, yy)] == 'P')
+                            {
+                                if (dd > 0 || _maze.InnerWarps.Contains((xx, yy)))
+                                {
+                                    var newDepth = dd + (_maze.InnerWarps.Contains((xx, yy)) ? 1 : -1);
+                                    var warpDest = _maze.Warps[(xx, yy)];
+                                    if (distances.Keys.Contains((warpDest.Item1, warpDest.Item2, newDepth)))
+                                        distances.Remove((warpDest.Item1, warpDest.Item2, newDepth));
+                                    loc = (warpDest.Item1, warpDest.Item2, newDepth);
+                                    cells.Enqueue((loc, dist));
+                                    distances.Add(loc, dist);
+                                }
+                            }
+                            else
+                            {
+                                cells.Enqueue(((xx, yy, dd), dist + 1));
+                                distances.Add((xx, yy, dd), dist + 1);
                             }
                         }
                     }
@@ -183,6 +254,8 @@ namespace AoC2019
                 var inWarp = inWarps[key];
                 maze.Warps.Add(outWarp, inWarp);
                 maze.Warps.Add(inWarp, outWarp);
+                maze.OuterWarps.Add(outWarp);
+                maze.InnerWarps.Add(inWarp);
             }
             return maze;
         }

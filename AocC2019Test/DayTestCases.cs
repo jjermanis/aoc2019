@@ -261,14 +261,17 @@ namespace AocC2019Test
         {
             var test1 = new Day20("Day20Test1.txt");
             Assert.AreEqual(23, test1.ShortestPathLength());
+            Assert.AreEqual(26, test1.ShortestPathLengthRecursive());
+
             var test2 = new Day20("Day20Test2.txt");
             Assert.AreEqual(58, test2.ShortestPathLength());
 
+            var test3 = new Day20("Day20Test3.txt");
+            Assert.AreEqual(396, test3.ShortestPathLengthRecursive());
+
             var day = new Day20();
             Assert.AreEqual(556, day.ShortestPathLength());
-
-            // TODO solve part 2
-            Assert.IsTrue(false);
+            Assert.AreEqual(6532, day.ShortestPathLengthRecursive());
         }
 
         [TestMethod]
