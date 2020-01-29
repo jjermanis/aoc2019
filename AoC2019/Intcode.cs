@@ -129,7 +129,9 @@ namespace AoC2019
             => _inputs.Dequeue();
 
         public IEnumerable<long> Execute(
-            bool outputToConsole = false)
+            bool outputToConsole = false,
+            bool isSingleStep = false,
+            long singleStepDefaultReturn = -1)
         {
             long pc = 0;
             long relativeBase = 0;
@@ -139,6 +141,8 @@ namespace AoC2019
             {
                 inst = ReadInst(pc);
                 var skipPcInc = false;
+                bool stepHasOutput = false;
+
                 switch (inst.OpCode)
                 {
                     case OpCode.Add:
@@ -151,10 +155,10 @@ namespace AoC2019
                         Write(1, GetInput());
                         break;
                     case OpCode.Output:
+                        stepHasOutput = true;
                         _output = Read(1);
                         if (outputToConsole)
                             Console.WriteLine(_output);
-                        yield return _output.Value;
                         break;
                     case OpCode.JumpNotZero:
                         if (Read(1) != 0)
@@ -186,6 +190,10 @@ namespace AoC2019
                 }
                 if (!skipPcInc)
                     pc += opLen[inst.OpCode];
+                if (stepHasOutput)
+                    yield return _output.Value;
+                else if (isSingleStep)
+                    yield return singleStepDefaultReturn;
             }
 
             void Write(long offset, long val)
