@@ -28,6 +28,8 @@ namespace AoC2019
 
         public int NearestManhattanIntersectDist()
         {
+            // Manhattan distance is simply the sume of differences between points for their
+            // x and y coordinates.
             var minDist = int.MaxValue;
             var curr = new GridLoc();
             foreach (var move in Moves(_wire2))

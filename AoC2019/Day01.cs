@@ -29,10 +29,10 @@ namespace AoC2019
         public int ComplexFuelTotal()
             => _moduleMasses.Sum(m => Day1ComplexFuel(m));
 
-
         private int Day1ComplexFuel(int mass)
         {
             var simpleFuel = Day1SimpleFuel(mass);
+            // Account for the fuel itself, recursively
             return simpleFuel > 0 ? simpleFuel + Day1ComplexFuel(simpleFuel) : 0;
         }
 

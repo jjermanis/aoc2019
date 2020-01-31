@@ -304,10 +304,10 @@ namespace AocC2019Test
         [TestMethod]
         public void Day23()
         {
-            // TODO solve part 1
-            Assert.IsTrue(false);
-            // TODO solve part 2
-            Assert.IsTrue(false);
+            var day = new Day23();
+            var results = day.ProcessNetwork();
+            Assert.AreEqual(27182, results.Item1);
+            Assert.AreEqual(19285, results.Item2);
         }
 
         [TestMethod]
